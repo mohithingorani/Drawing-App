@@ -1,5 +1,5 @@
 "use client";
-import { useEffect, useRef, useState, MouseEvent } from "react";
+import { useRef, useState, MouseEvent } from "react";
 
 type Point = { x: number; y: number };
 
@@ -8,15 +8,11 @@ export default function Home() {
   const canvasRef = useRef<HTMLCanvasElement | null>(null);
   const prevPoint = useRef<Point | null>(null);
 
-  function drawLine(
-    prevPoint: Point,
-    currentPoint: Point,
-    ctx: CanvasRenderingContext2D
-  ) {
+  function drawLine(prevPoint: Point, currentPoint: Point, ctx: CanvasRenderingContext2D) {
     ctx.beginPath();
     ctx.lineWidth = 5;
     ctx.strokeStyle = "blue";
-    ctx.moveTo(prevPoint.x , prevPoint.y );
+    ctx.moveTo(prevPoint.x, prevPoint.y);
     ctx.lineTo(currentPoint.x, currentPoint.y);
     ctx.stroke();
   }
@@ -27,41 +23,33 @@ export default function Home() {
   }
 
   function handleMouseDown(event: MouseEvent<HTMLCanvasElement>) {
+    console.log("Mouse Down");
     setIsDrawing(true);
     prevPoint.current = getCanvasPoint(event);
   }
-
+  
   function handleMouseMove(event: MouseEvent<HTMLCanvasElement>) {
     if (!isDrawing) return;
-
+    console.log("Mouse Move");
+  
     const currentPoint = getCanvasPoint(event);
-    const ctx = canvasRef.current!.getContext("2d")!;
-    console.log(currentPoint);
-    if (prevPoint.current != null) {
+    const ctx = canvasRef.current!.getContext("2d");
+    if (!ctx) {
+      console.log("No ctx");
+      return;
+    }
+  
+    if (prevPoint.current) {
       drawLine(prevPoint.current, currentPoint, ctx);
-      prevPoint.current = currentPoint; 
+      prevPoint.current = currentPoint;
     }
   }
-
+  
   function handleMouseUp() {
+    console.log("Mouse Up");
     setIsDrawing(false);
     prevPoint.current = null;
   }
-
-  useEffect(() => {
-    const canvas = canvasRef.current;
-    if (!canvas) return;
-
-    canvas.addEventListener("mousedown", handleMouseDown as any);
-    canvas.addEventListener("mousemove", handleMouseMove as any);
-    window.addEventListener("mouseup", handleMouseUp as any);
-
-    return () => {
-      canvas.removeEventListener("mousedown", handleMouseDown as any);
-      canvas.removeEventListener("mousemove", handleMouseMove as any);
-      window.removeEventListener("mouseup", handleMouseUp as any);
-    };
-  }, [isDrawing]);
 
   return (
     <div className="h-screen w-screen flex justify-center items-center">
@@ -70,6 +58,10 @@ export default function Home() {
         width={750}
         height={750}
         className="border border-black rounded-md"
+        onMouseDown={handleMouseDown}
+        onMouseMove={handleMouseMove}
+        onMouseUp={handleMouseUp}
+        onMouseLeave={handleMouseUp} // Optional: stops drawing if mouse leaves the canvas
       ></canvas>
     </div>
   );
