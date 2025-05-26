@@ -83,9 +83,7 @@ export default function Home() {
         </div>
       </div>
       <div>
-        <div>
-          Start creating drawings
-        </div>
+       
       </div>
       <canvas
         ref={canvasRef}
