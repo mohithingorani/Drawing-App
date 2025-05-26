@@ -19,6 +19,7 @@ jobs:
           username: ${{ secrets.EC2_USER }}
           key: ${{ secrets.SSH_PRIVATE_KEY }}
           script: |
+            source ~/.bashrc
             cd /home/ubuntu/Drawing-App
             git pull origin main
             npm install
