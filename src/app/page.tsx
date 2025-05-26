@@ -7,15 +7,18 @@ export default function Home() {
   const [isDrawing, setIsDrawing] = useState(false);
   const canvasRef = useRef<HTMLCanvasElement | null>(null);
   const prevPoint = useRef<Point | null>(null);
+  const [isEraser, setIsEraser] = useState(false);
 
   function drawLine(prevPoint: Point, currentPoint: Point, ctx: CanvasRenderingContext2D) {
     ctx.beginPath();
     ctx.lineWidth = 5;
-    ctx.strokeStyle = "blue";
+    isEraser? ctx.strokeStyle = "white":ctx.strokeStyle = "blue";
     ctx.moveTo(prevPoint.x, prevPoint.y);
     ctx.lineTo(currentPoint.x, currentPoint.y);
     ctx.stroke();
   }
+
+
 
   function getCanvasPoint(event: MouseEvent<HTMLCanvasElement>): Point {
     const rect = canvasRef.current!.getBoundingClientRect();
@@ -40,6 +43,7 @@ export default function Home() {
     }
   
     if (prevPoint.current) {
+      
       drawLine(prevPoint.current, currentPoint, ctx);
       prevPoint.current = currentPoint;
     }
@@ -53,6 +57,9 @@ export default function Home() {
 
   return (
     <div className="h-screen w-screen flex justify-center items-center">
+    <button onClick={()=>setIsEraser(!isEraser)}>
+      Eraser
+    </button>
       <canvas
         ref={canvasRef}
         width={750}
