@@ -82,6 +82,11 @@ export default function Home() {
           <input min={0} max={20} onChange={(e)=>setStrokeValue(Number(e.target.value))} type="range" value={strokeValue} />
         </div>
       </div>
+      <div>
+        <div>
+          Start creating drawings
+        </div>
+      </div>
       <canvas
         ref={canvasRef}
         width={1000}
