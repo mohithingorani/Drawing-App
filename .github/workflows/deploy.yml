@@ -15,7 +15,7 @@ jobs:
       - name: Deploy via SSH
         uses: appleboy/ssh-action@v1.0.0
         with:
-          host: ${{ secrets.EC2_HOST }}
+          host: ${{ secrets.UBUNTU_HOST }}
           username: ${{ secrets.UBTUNU_USER }}
           key: ${{ secrets.SSH_PRIVATE_KEY }}
           script: |
