@@ -1,5 +1,5 @@
 "use client";
-import { useRef, useState, MouseEvent } from "react";
+import { useRef, useState, MouseEvent, useEffect } from "react";
 
 type Point = { x: number; y: number };
 
@@ -9,7 +9,23 @@ export default function Home() {
   const prevPoint = useRef<Point | null>(null);
   const [isEraser, setIsEraser] = useState(false);
   const [isPen, setIsPen] = useState(true);
-  const [strokeValue, setStrokeValue] = useState<number>(10); 
+  const [strokeValue, setStrokeValue] = useState<number>(10);
+
+  const [penColor, setPenColor] = useState<string>("blue");
+  const [eraserColor, setEraserColor] = useState<string>("white");
+
+  useEffect(()=>{
+    const canvas = canvasRef.current;
+    if(!canvas) return;
+    const ctx = canvas.getContext("2d");
+    if(ctx){
+      ctx.fillStyle="white";
+      ctx.fillRect(0,0,canvas.width,canvas.height);
+    }
+  },[]);
+  
+
+
   function drawLine(
     prevPoint: Point,
     currentPoint: Point,
@@ -17,7 +33,7 @@ export default function Home() {
   ) {
     ctx.beginPath();
     ctx.lineWidth = strokeValue;
-    isEraser ? (ctx.strokeStyle = "white") : (ctx.strokeStyle = "blue");
+    ctx.strokeStyle=isPen?penColor:eraserColor;
     ctx.moveTo(prevPoint.x, prevPoint.y);
     ctx.lineTo(currentPoint.x, currentPoint.y);
     ctx.stroke();
@@ -90,10 +106,19 @@ export default function Home() {
           >
             Pen
           </button>
-          <button onClick={clearBoard}>
+          <button className={`hover:bg-yellow-500 hover:text-white `} onClick={clearBoard}>
             Clear
           </button>
           <input min={0} max={20} onChange={(e)=>setStrokeValue(Number(e.target.value))} type="range" value={strokeValue} />
+          <button className="hover:bg-green-500 hover:text-white" onClick={()=>{
+            const canvas = canvasRef.current;
+            if(!canvas) return;
+            const image = canvas.toDataURL("image/png");
+            const link = document.createElement("a");
+            link.href=image;
+            link.download = "my-drawing-png";
+            link.click();
+          }}>Save Drawing </button>
         </div>
       </div>
       <div>
@@ -110,6 +135,25 @@ export default function Home() {
         onMouseUp={handleMouseUp}
         onMouseLeave={handleMouseUp} // Optional: stops drawing if mouse leaves the canvas
       ></canvas>
+      <div className="fixed left-0 top-0">
+        <div className="ml-8 mt-8 ">
+          Toolbar
+          <div className="flex flex-col">
+            <div>
+              <label>Pen Color</label>
+              <input type="color" value={penColor} onChange={(e)=>{
+                setPenColor(e.target.value as string);
+              }} />
+            </div>
+            <div>
+              <label>Eraser Color</label>
+              <input type="color" value={eraserColor} onChange={(e)=>{
+                setEraserColor(e.target.value as string);
+              }} />
+            </div>
+          </div>
+        </div>
+      </div>
     </div>
   );
 }
