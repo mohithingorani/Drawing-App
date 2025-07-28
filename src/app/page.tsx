@@ -83,11 +83,8 @@ export default function Home() {
         </div>
       </div>
       <div>
-<<<<<<< HEAD
        
-=======
      
->>>>>>> cf7b9cc63afafda7fdb088c2252e55a7c8f578d2
       </div>
       <canvas
         ref={canvasRef}
