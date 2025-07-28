@@ -57,6 +57,17 @@ export default function Home() {
     prevPoint.current = null;
   }
 
+  function clearBoard(){
+    const canvas  = canvasRef.current;
+    if(canvas){
+      const ctx = canvas.getContext("2d");
+      if(ctx){
+        ctx.fillStyle="white";
+        ctx.clearRect(0,0,canvas.width,canvas.height);
+      }
+    }
+  }
+
   return (
     <div className="h-screen z-0 w-screen flex  justify-center items-center">
       <div className="z-10 bg-blue-100 absolute top-20">
@@ -78,6 +89,9 @@ export default function Home() {
             className={`hover:bg-red-500 hover:text-white ${isPen &&"bg-red-500 text-white"}`}
           >
             Pen
+          </button>
+          <button onClick={clearBoard}>
+            Clear
           </button>
           <input min={0} max={20} onChange={(e)=>setStrokeValue(Number(e.target.value))} type="range" value={strokeValue} />
         </div>
