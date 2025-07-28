@@ -24,8 +24,8 @@ jobs:
             [ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"
             nvm use 24
 
-            cd /home/ubuntu/Drawing-App
+            cd /root/Drawing-App
             git pull origin main
             npm install
             npm run build
-            pm2 restart next-app
+            pm2 restart drawing-app
