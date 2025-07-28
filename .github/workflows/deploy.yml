@@ -16,7 +16,7 @@ jobs:
         uses: appleboy/ssh-action@v1.0.0
         with:
           host: ${{ secrets.UBUNTU_HOST }}
-          username: ${{ secrets.UBTUNU_USER }}
+          username: ${{ secrets.UBUNTU_USER }}
           key: ${{ secrets.SSH_PRIVATE_KEY }}
           script: |
             export NVM_DIR="$HOME/.nvm"
