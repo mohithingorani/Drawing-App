@@ -15,6 +15,7 @@ export default function Home() {
   const [redoStack, setRedoStack] = useState<Stroke[]>([]);
   const currentStroke = useRef<Stroke | null>(null);
   const [isEraser, setIsEraser] = useState(false);
+  const [rectangle, setRectangle] = useState(false); 
   const [isPen, setIsPen] = useState(true);
   const [strokeValue, setStrokeValue] = useState<number>(10);
 
@@ -200,10 +201,24 @@ export default function Home() {
           >
             Save Drawing{" "}
           </button>
-          <button>
+          <button onClick={()=>{
+            if(strokes.length>0){
+              const newStrokes = [...strokes];
+              const last = newStrokes.pop()!;
+              setStrokes(newStrokes);
+              setRedoStack((prev)=>[...prev,last]);
+            }
+          }}>
             Undo
           </button>
-          <button>
+          <button onClick={()=>{
+            if(redoStack.length>0){
+              const newRedos = [...redoStack];
+              const last = newRedos.pop()!;
+              setRedoStack(newRedos);
+              setStrokes([...strokes,last]);
+            }
+          }}>
             Redo
           </button>
         </div>
