@@ -178,7 +178,7 @@ export default function Home() {
             className={`hover:bg-yellow-500 hover:text-white `}
             onClick={clearBoard}
           >
-            Clear
+            Clear Shreyas
           </button>
           <input
             min={0}
